@@ -8,11 +8,17 @@ lxc-stop -n $name || true
 config=/var/lib/lxc/$name/config
 placeholder='###fireq'
 mount_cache=${mount_cache:-"/var/cache/fireq"}
+
+# create required directories
+mkdir -p $mount_cache/{pip,npm,yarn,dpkg}
+mkdir -p /var/tmp/data /var/spool/ftp
+
 sed -i '/'$placeholder'/Q' $config
 cat <<EOF >> $config
 $placeholder
 lxc.mount.entry = $mount_cache/pip root/.cache/pip/ none bind,create=dir
 lxc.mount.entry = $mount_cache/npm root/.npm none bind,create=dir
+lxc.mount.entry = $mount_cache/yarn root/.yarn none bind,create=dir
 # apt-get uses lock files, so we can't use shared dpkg cache on CI
 #lxc.mount.entry = $mount_cache/dpkg var/cache/apt/archives/ none bind,create=dir
 

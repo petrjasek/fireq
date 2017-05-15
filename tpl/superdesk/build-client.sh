@@ -2,8 +2,7 @@
 {{>add-node.sh}}
 
 cd {{repo_client}}
-npm install grunt-cli
-time npm install
+time yarn install
 {{^is_superdesk}}
 # liveblog 3.0.9, 3.1.0 versions need bower
 if [ -f bower.json ]; then
@@ -12,6 +11,7 @@ if [ -f bower.json ]; then
 fi
 {{/is_superdesk}}
 
+yarn add grunt-cli
 # use default urls here
 time \
 SUPERDESK_URL=http://localhost/api \
